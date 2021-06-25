@@ -36,13 +36,23 @@ push: `git push git@github.com:Mykrobin/MIT-6.S081.git` or  `git push https://gi
 ---
 
 lab-1-util:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/util.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-2-syscall:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/syscall.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-3-pgtbl:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/pgtbl.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-4-traps:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/traps.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-5-lazy:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/lazy.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-6-cow:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/cow.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-7-thread:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/thread.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-8-lock:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/lock.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-9-fs:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/fs.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-10-mmap:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/mmap.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
 lab-11-net:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/net.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
