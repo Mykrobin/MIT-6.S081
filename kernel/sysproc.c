@@ -53,13 +53,16 @@ sys_sbrk(void)
 }
 
 uint64
-sys_sleep(void)
+sys_sleep(void) // 在内核系统调用中并没有 sleep(n) 的参数
 {
   int n;
   uint ticks0;
 
   if(argint(0, &n) < 0)
     return -1;
+
+  printf("get n: %d \n", n); // 在此处已经获取 n 的数值，通过argint() 方法获取
+  // 后续通过数值 n 控制sleep的时间
   acquire(&tickslock);
   ticks0 = ticks;
   while(ticks - ticks0 < n){

@@ -21,7 +21,7 @@ int chdir(const char*);
 int dup(int);
 int getpid(void);
 char* sbrk(int);
-int sleep(int);
+int sleep(int);   // 用户调用接口，内部调用 sys_sleep()
 int uptime(void);
 
 // ulib.c
