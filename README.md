@@ -3,37 +3,31 @@
 
 6.S081 is based on xv6, (xv6: a simple, Unix-like teaching operating system).
 
-## Deployment
+## Overview of Deployment
 
----
+For Deployment Details, Please turn to [MIT-6-S081-0-deployment](http://mykrobin.github.io/2021/06/22/MIT-6-S081-0-deployment/)
 
-Deployment: [link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-0-deployment/)
+libs: 
+```shell
+apt-get install git build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu
+```
 
-Based OS: `ubuntu-20.04`
+| Info                    | Description                                               |
+| ----------------------- | --------------------------------------------------------- |
+| Based OS                | `ubuntu-20.04`                                            |
+| **clone xv6-labs-2020** | `git clone git://g.csail.mit.edu/xv6-labs-2020`           |
+| add remote repositories | `git remote add labs git://g.csail.mit.edu/xv6-labs-2020` |
+| pull                    | `git fetch labs`                                          |
+| show all branches       | `git branch -a`                                           |
+| checkout                | `git checkout util`                                       |
+| push                    | `git@github.com:Mykrobin/MIT-6.S081.git`                  |
+| **build**               | `make qemu`                                               |
 
-libs: `apt-get install git build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu`
 
-clone xv6-labs-2020: `git clone git://g.csail.mit.edu/xv6-labs-2020`
-
-build: `make qemu`
-
----
-
-Link to remote repositories:
-
-add remote repositories: `git remote add labs git://g.csail.mit.edu/xv6-labs-2020`
-
-pull: `git fetch labs`
-
-show all branches: `git branch -a`
-
-checkout: `git checkout util`
-
-push: `git push git@github.com:Mykrobin/MIT-6.S081.git` or  `git push https://github.com/Mykrobin/MIT-6.S081.git`
 
 ## Labs
 
----
+
 
 lab-1-util:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/util.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
 
@@ -56,3 +50,7 @@ lab-9-fs:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/fs.html)     [
 lab-10-mmap:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/mmap.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
 
 lab-11-net:   [MIT_link](https://pdos.csail.mit.edu/6.828/2020/labs/net.html)     [Backup_link](http://mykrobin.github.io/2021/06/22/MIT-6-S081-1-util/)
+
+```
+
+```
