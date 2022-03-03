@@ -61,7 +61,7 @@ sys_sleep(void) // 在内核系统调用中并没有 sleep(n) 的参数
   if(argint(0, &n) < 0)
     return -1;
 
-  printf("get n: %d \n", n); // 在此处已经获取 n 的数值，通过argint() 方法获取
+  // printf("get n: %d \n", n); // 在此处已经获取 n 的数值，通过argint() 方法获取
   // 后续通过数值 n 控制sleep的时间
   acquire(&tickslock);
   ticks0 = ticks;

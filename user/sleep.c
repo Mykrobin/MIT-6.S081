@@ -23,9 +23,9 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    fprintf(2, "parameter number: %d, input: %s.\n", argc, argv[1]);
+    // fprintf(2, "parameter number: %d, input: %s.\n", argc, argv[1]);
     n = atoi(argv[1]);
-    fprintf(2, "invoking user level sleep function.\n");
+    // fprintf(2, "invoking user level sleep function.\n");
     sleep(n);      // 参数n是如何传到内核的？
 
     exit(0);
