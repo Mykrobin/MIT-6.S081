@@ -5,7 +5,9 @@
 
 ## Overview of Deployment
 
-For Deployment Details, Please turn to [MIT-6-S081-0-deployment](http://mykrobin.github.io/2021/06/22/MIT-6-S081-0-deployment/)
+For Deployment Details, Please turn to [MIT-6-S081-0-deployment](http://mykrobin.github.io/2021/06/22/MIT-6-S081-0-deployment/).
+
+For the original lecture schedule, turn to [6.S801](https://pdos.csail.mit.edu/6.828/2020/schedule.html), for the Chinese version, turn to [6.S801 zh-CN](https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/).
 
 libs: 
 ```shell
