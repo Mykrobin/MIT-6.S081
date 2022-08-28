@@ -1,3 +1,10 @@
+#define DEBUG 0
+#if DEBUG == 1
+#define debug(...) printf(__VA_ARGS__)
+#else
+#define debug(...) ((void)0)
+#endif
+
 struct buf;
 struct context;
 struct file;
@@ -161,7 +168,7 @@ int             uartgetc(void);
 void            kvminit(void);
 void            kvminithart(void);
 uint64          kvmpa(uint64);
-void            kvmmap(uint64, uint64, uint64, int);
+void            kvmmap(pagetable_t, uint64, uint64, uint64, int);
 int             mappages(pagetable_t, uint64, uint64, uint64, int);
 pagetable_t     uvmcreate(void);
 void            uvminit(pagetable_t, uchar *, uint);
@@ -179,6 +186,10 @@ int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
 
+// mirror
+void            vmprint(pagetable_t);
+void            mirror(pagetable_t dst, pagetable_t src, uint64 from, uint64 to);
+void            log_info(char *);
 // plic.c
 void            plicinit(void);
 void            plicinithart(void);

@@ -30,18 +30,7 @@ procinit(void)
   initlock(&pid_lock, "nextpid");
   for(p = proc; p < &proc[NPROC]; p++) {
       initlock(&p->lock, "proc");
-
-      // Allocate a page for the process's kernel stack.
-      // Map it high in memory, followed by an invalid
-      // guard page.
-      char *pa = kalloc();
-      if(pa == 0)
-        panic("kalloc");
-      uint64 va = KSTACK((int) (p - proc));
-      kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-      p->kstack = va;
   }
-  kvminithart();
 }
 
 // Must be called with interrupts disabled,
@@ -85,6 +74,12 @@ allocpid() {
   return pid;
 }
 
+extern pagetable_t
+init_kernel_pagetable();
+
+extern pagetable_t
+new_kernel_pagetable();
+
 // Look in the process table for an UNUSED proc.
 // If found, initialize state required to run in the kernel,
 // and return with p->lock held.
@@ -108,10 +103,23 @@ found:
   p->pid = allocpid();
 
   // Allocate a trapframe page.
+  debug("create trapframe for pid: %d\n", p->pid);
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
     release(&p->lock);
     return 0;
   }
+
+  p->kernel_pagetable = new_kernel_pagetable();
+  // Allocate a page for the process's kernel stack.
+  // Map it high in memory, followed by an invalid
+  // guard page.
+  debug("allocate a page for process kernel stack\n");
+  char *pa = kalloc();
+  if(pa == 0)
+    panic("kalloc");
+  uint64 va = KSTACK(0);
+  kvmmap(p->kernel_pagetable, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+  p->kstack = va;
 
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
@@ -127,7 +135,30 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  //log_info("allocproc");
   return p;
+}
+
+static void proc_freekernelpagetable(pagetable_t pagetable)
+{
+  pagetable_t t2 = pagetable;
+  for (int i = 0; i < 512; i++) {
+    if (i == KERNBASE >> 30) continue;
+    pte_t pte2 = t2[i];
+    if ((pte2 & PTE_V) == 0) continue;
+    pagetable_t t1 = (pagetable_t)PTE2PA(pte2);
+    for (int j = 0; j < 512; j++) {
+      int index_2 = PX(2, PLIC);
+      int index_1 = PX(1, PLIC);
+      if (i == index_2 && (j == index_1 || j == index_1 + 1)) continue;
+      pte_t pte1 = t1[j];
+      if ((pte1 & PTE_V) == 0) continue;
+      pagetable_t t0 = (pagetable_t)PTE2PA(pte1);
+      kfree(t0);
+    }
+    kfree(t1);
+  }
+  kfree(t2);
 }
 
 // free a proc structure and the data hanging from it,
@@ -136,12 +167,18 @@ found:
 static void
 freeproc(struct proc *p)
 {
+  debug("freeproc pid: %d, name: %s\n", p->pid, p->name);
   if(p->trapframe)
     kfree((void*)p->trapframe);
   p->trapframe = 0;
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
+  if(p->kstack)
+	  uvmunmap(p->kernel_pagetable, p->kstack, 1, 1);
+  if (p->kernel_pagetable) {
+    proc_freekernelpagetable(p->kernel_pagetable);
+  }
   p->sz = 0;
   p->pid = 0;
   p->parent = 0;
@@ -243,6 +280,7 @@ growproc(int n)
 
   sz = p->sz;
   if(n > 0){
+    if (sz >= PLIC - n) return -1;
     if((sz = uvmalloc(p->pagetable, sz, sz + n)) == 0) {
       return -1;
     }
@@ -267,12 +305,19 @@ fork(void)
     return -1;
   }
 
+  // dup process pages in kernel pagetable
+  // THIS IS WRONG!
+  // after fork we will have different user content
+  // yet clone kernel to kernel is not going to help!
   // Copy user memory from parent to child.
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
     freeproc(np);
     release(&np->lock);
     return -1;
   }
+
+  mirror(np->kernel_pagetable, np->pagetable, 0, PLIC);
+
   np->sz = p->sz;
 
   np->parent = p;
@@ -473,7 +518,11 @@ scheduler(void)
         // before jumping back to us.
         p->state = RUNNING;
         c->proc = p;
+
+        w_satp(MAKE_SATP(p->kernel_pagetable));
+        sfence_vma();
         swtch(&c->context, &p->context);
+        kvminithart();
 
         // Process is done running for now.
         // It should have changed its p->state before coming back.
